@@ -9,9 +9,6 @@ body {
     font-weight: 400;
     line-height: 1.7;
     min-height: 100vh;
-    background-image:
-        radial-gradient(ellipse at top left, rgba(196,150,90,0.12) 0%, transparent 55%),
-        radial-gradient(ellipse at bottom right, rgba(139,94,60,0.10) 0%, transparent 55%);
 }
 
 /* base layout */
@@ -19,7 +16,6 @@ body {
     max-width: 820px;
     margin: 0 auto;
     padding: 40px 24px 60px;
-    animation: fadeIn 0.5s ease;
 }
 
 /* header */
@@ -42,9 +38,7 @@ header h1 {
 .tagline {
     font-size: 17px;
     color: #7a6248;
-    font-style: italic;
     font-family: 'Playfair Display', Georgia, serif;
-    font-weight: 400;
 }
 
 /* section header */
@@ -173,24 +167,14 @@ h2 {
     border-bottom: 1px solid #d9c9b0;
     color: #2e1f0f;
 }
-
-.invoice-table tbody tr:nth-child(even) {
-    background-color: #f2ebe0;
-}
-
-.invoice-table tbody tr:last-child td {
-    border-bottom: none;
-}
-
 .invoice-table .right {
     text-align: right;
 }
-
 .invoice-divider {
     border: none;
     border-top: 2px solid #d9c9b0;
-    width: 70%;
-    margin: 28px auto;
+    width: 100%;
+    margin: 20px auto;
 }
 
 /* invoice summary */
@@ -201,7 +185,7 @@ h2 {
 
 .invoice-summary tr td {
     padding: 7px 16px;
-    color: #2e1f0f;
+    color: #3b2a1a;
 }
 
 .invoice-summary tr td:last-child {

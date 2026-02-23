@@ -1,25 +1,4 @@
-/*
- * The Furniture Shop - script.js
- * Transaction system for purchasing furniture items.
- *
- * Step-by-step user interaction flow:
- * Step 0: Page loads with inventory table and "Make a Purchase" button.
- * Step 1: Prompt user for item they want to buy.
- * Step 2: Prompt user for quantity of that item.
- * Step 2b: Store item name and quantity.
- * Step 3: Ask if user wants to continue shopping. If yes, go to Step 1. If no, proceed to Step 4.
- * Step 4: Ask for the two-letter state abbreviation for shipping.
- * Step 4a: Validate the state abbreviation.
- * Step 5: Perform all business calculations (subtotal, shipping, tax, total).
- * Step 6: Display the formatted invoice on the page.
- * Step 7: "Shop Again" button resets the page to Step 0.
- */
-
-/* =============================================
-   GLOBAL VARIABLES
-   ============================================= */
-
-// based arrays
+// base arrays
 const items  = ["Chair", "Recliner", "Table", "Umbrella"];
 const prices = [25.50,   37.75,      49.95,   24.89];
 
@@ -316,7 +295,7 @@ function displayInvoice(orderData) {
     document.getElementById("inv-tax").textContent      = "$" + orderData.tax.toFixed(2);
     document.getElementById("inv-total").textContent    = "$" + orderData.total.toFixed(2);
 
-    // shipping lable
+    // shipping label
     document.getElementById("inv-shipping-label").textContent = "Shipping (Zone " + orderData.zone + "):";
 
     let shippingCell = document.getElementById("inv-shipping");
