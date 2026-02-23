@@ -19,14 +19,14 @@
    GLOBAL VARIABLES
    ============================================= */
 
-// Step 0 - Catalog arrays (parallel arrays)
+// based arrays
 const items  = ["Chair", "Recliner", "Table", "Umbrella"];
 const prices = [25.50,   37.75,      49.95,   24.89];
 
-// Step 5 - Tax rate constant
+// tax rate
 const TAX_RATE = 0.15;
 
-// Step 4a - All valid US state abbreviations
+// US state abbreviations for shipping
 const stateAbbreviations = [
     "AL","AK","AZ","AR","CA","CO","CT","DE","FL","GA",
     "HI","ID","IL","IN","IA","KS","KY","LA","ME","MD",
@@ -36,8 +36,8 @@ const stateAbbreviations = [
     "DC"
 ];
 
-// Shipping zone mapping: state abbreviation -> zone number
-// Hawaii and Alaska = Zone 6
+// shipping mapping for zones
+// hawaii + alaska - zone 6
 const stateZones = {
     "CT": 1, "DE": 1, "MA": 1, "MD": 1, "ME": 1, "NH": 1,
     "NJ": 1, "NY": 1, "PA": 1, "RI": 1, "VT": 1, "DC": 1,
@@ -52,31 +52,26 @@ const stateZones = {
     "AK": 6, "HI": 6
 };
 
-// Step 2b - Order storage arrays (parallel arrays)
+// order storage
 let purchasedItems      = [];
 let purchasedQuantities = [];
 
 
-/* =============================================
-   STEP 1 - START PURCHASE (called by button)
-   ============================================= */
+// start purchase 
 function startPurchase() {
-    // Reset order arrays for a fresh transaction
     purchasedItems      = [];
     purchasedQuantities = [];
 
-    // Begin item selection loop
+    // item selections
     shopForItems();
 }
 
 
-/* =============================================
-   STEP 1 - ASK FOR ITEM
-   ============================================= */
+// ask for item
 function shopForItems() {
     let itemInput = prompt("What item would you like to buy today: Chair, Recliner, Table, or Umbrella?");
 
-    // Handle cancel
+    // if user cancels
     if (itemInput === null) {
         alert("Your transaction has been cancelled. We hope to see you again soon!");
         return;
@@ -90,27 +85,25 @@ function shopForItems() {
         return;
     }
 
-    // Find matching item (case insensitive)
+    // case sensitive name finder
     let itemIndex = findItemIndex(itemInput);
-
+    // if name incorrect
     if (itemIndex === -1) {
         alert("\"" + itemInput + "\" is not a valid item. Please choose from: Chair, Recliner, Table, or Umbrella.");
         shopForItems();
         return;
     }
 
-    // Step 2 - Ask for quantity
+    // quantity of item
     askQuantity(itemIndex);
 }
 
 
-/* =============================================
-   STEP 2 - ASK FOR QUANTITY
-   ============================================= */
+// asking for quantity
 function askQuantity(itemIndex) {
     let quantityInput = prompt("How many " + items[itemIndex] + "(s) would you like to buy?");
 
-    // Handle cancel
+    // if user cancel
     if (quantityInput === null) {
         alert("Your transaction has been cancelled. We hope to see you again soon!");
         return;
@@ -125,19 +118,17 @@ function askQuantity(itemIndex) {
         return;
     }
 
-    // Step 2b - Store item and quantity
+    // store item + quant
     storeItem(itemIndex, quantity);
 
-    // Step 3 - Ask to continue shopping
+    // ask to cont
     askContinue();
 }
 
 
-/* =============================================
-   STEP 2b - STORE ITEM IN ORDER ARRAYS
-   ============================================= */
+// storing items
 function storeItem(itemIndex, quantity) {
-    // Check if the item was already added; if so, add to its quantity
+    // checking if already has item
     let existingIndex = purchasedItems.indexOf(items[itemIndex]);
 
     if (existingIndex !== -1) {
@@ -149,13 +140,11 @@ function storeItem(itemIndex, quantity) {
 }
 
 
-/* =============================================
-   STEP 3 - CONTINUE SHOPPING?
-   ============================================= */
+// asking if user wants to shop still
 function askContinue() {
     let continueInput = prompt("Continue shopping? y/n");
 
-    // Handle cancel
+    // if cancel
     if (continueInput === null) {
         alert("Your transaction has been cancelled. We hope to see you again soon!");
         return;
@@ -164,10 +153,10 @@ function askContinue() {
     continueInput = continueInput.trim().toLowerCase();
 
     if (continueInput === "y" || continueInput === "yes") {
-        // Return to Step 1
+        // returns to ask item
         shopForItems();
     } else if (continueInput === "n" || continueInput === "no") {
-        // Step 4 - Ask for state
+        // moves on to as for state
         askState();
     } else {
         alert("Please enter 'y' for yes or 'n' for no.");
@@ -175,14 +164,11 @@ function askContinue() {
     }
 }
 
-
-/* =============================================
-   STEP 4 - ASK FOR STATE ABBREVIATION
-   ============================================= */
+// asking for state
 function askState() {
     let stateInput = prompt("Please enter the two-letter state abbreviation: ");
 
-    // Handle cancel
+    // if user cancels
     if (stateInput === null) {
         alert("Your transaction has been cancelled. We hope to see you again soon!");
         return;
@@ -190,30 +176,24 @@ function askState() {
 
     stateInput = stateInput.trim().toUpperCase();
 
-    // Step 4a - Validate state
+    // validate state
     if (!isValidState(stateInput)) {
         alert("\"" + stateInput + "\" is not a valid U.S. state abbreviation. Please try again.");
         askState();
         return;
     }
 
-    // Step 5 - Perform calculations and display invoice
+    // calculations and invoice 
     let orderData = calculateOrder(stateInput);
     displayInvoice(orderData);
 }
 
-
-/* =============================================
-   STEP 4a - VALIDATE STATE ABBREVIATION
-   ============================================= */
 function isValidState(stateCode) {
     return stateAbbreviations.indexOf(stateCode) !== -1;
 }
 
 
-/* =============================================
-   HELPER - FIND ITEM INDEX (case insensitive)
-   ============================================= */
+// finding item (case sensitive)
 function findItemIndex(inputName) {
     let lowerInput = inputName.toLowerCase();
     let index = -1;
@@ -226,11 +206,9 @@ function findItemIndex(inputName) {
 }
 
 
-/* =============================================
-   STEP 5 - PERFORM BUSINESS CALCULATIONS
-   ============================================= */
+// calculations
 function calculateOrder(stateCode) {
-    // Calculate subtotal
+    // calc subtotal 
     let subtotal = 0;
     for (let i = 0; i < purchasedItems.length; i++) {
         let itemIdx   = findItemIndex(purchasedItems[i]);
@@ -240,15 +218,15 @@ function calculateOrder(stateCode) {
 
     subtotal = parseFloat(subtotal.toFixed(2));
 
-    // Determine shipping zone
+    // figures out shipping zone
     let zone         = stateZones[stateCode] || 5;
     let shippingCost = getShippingCost(zone);
 
-    // Use ternary operator: orders over $100 get free shipping
+    // for orders over $100 free shipping
     let shippingCharge = (subtotal > 100) ? 0 : shippingCost;
     let isFreeShipping = (subtotal > 100);
 
-    // Calculate tax and total
+    // tax + total
     let tax   = parseFloat((subtotal * TAX_RATE).toFixed(2));
     let total = parseFloat((subtotal + shippingCharge + tax).toFixed(2));
 
@@ -264,9 +242,7 @@ function calculateOrder(stateCode) {
 }
 
 
-/* =============================================
-   STEP 5 - GET SHIPPING COST BY ZONE (switch)
-   ============================================= */
+// shipping by zone cost
 function getShippingCost(zone) {
     let cost;
     switch (zone) {
@@ -295,17 +271,13 @@ function getShippingCost(zone) {
 }
 
 
-/* =============================================
-   STEP 6 - DISPLAY INVOICE
-   Populates pre-built HTML elements in index.html
-   No HTML strings are built here - only DOM updates
-   ============================================= */
+// display invoice
 function displayInvoice(orderData) {
-    // Fill in state and zone
+    // state and zone 
     document.getElementById("inv-state").textContent = orderData.stateCode;
     document.getElementById("inv-zone").textContent  = orderData.zone;
 
-    // Build item rows using createElement (no HTML strings)
+    // showing items being purchased
     let tbody = document.getElementById("inv-item-rows");
     tbody.innerHTML = "";
 
@@ -339,12 +311,12 @@ function displayInvoice(orderData) {
         tbody.appendChild(tr);
     }
 
-    // Fill in totals
+    // showing all totals
     document.getElementById("inv-subtotal").textContent = "$" + orderData.subtotal.toFixed(2);
     document.getElementById("inv-tax").textContent      = "$" + orderData.tax.toFixed(2);
     document.getElementById("inv-total").textContent    = "$" + orderData.total.toFixed(2);
 
-    // Shipping label and value
+    // shipping lable
     document.getElementById("inv-shipping-label").textContent = "Shipping (Zone " + orderData.zone + "):";
 
     let shippingCell = document.getElementById("inv-shipping");
@@ -356,16 +328,14 @@ function displayInvoice(orderData) {
         shippingCell.className   = "";
     }
 
-    // Show invoice page, hide store page
+    // full invoice
     document.getElementById("store-page").style.display  = "none";
     document.getElementById("invoice-page").style.display = "block";
     window.scrollTo(0, 0);
 }
 
 
-/* =============================================
-   STEP 7 - RESET PAGE (Shop Again button)
-   ============================================= */
+// if user wants to shop again
 function resetPage() {
     purchasedItems      = [];
     purchasedQuantities = [];
